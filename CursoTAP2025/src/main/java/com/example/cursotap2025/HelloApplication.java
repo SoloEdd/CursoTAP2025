@@ -32,16 +32,18 @@ public class HelloApplication extends Application {
         menuCompetencia2 = new Menu("Competencia Dos");
         menuBarPrincipal.getMenus().addAll(menuCompetencia1, menuCompetencia2);
         vBox = new VBox(menuBarPrincipal);
-
+        scena = new Scene(vBox);
+        scena.getStylesheets().add(getClass().getResource("/Styles/main.css").toExternalForm());
     }
 
     @Override
     public void start(Stage stage) throws IOException {
         CrearUI();
-        stage.setTitle("Titulo de la ventana a ver que tal juasjuasjuas");
-        stage.setScene(new Scene(vBox));
+        stage.setTitle("Topicos Avanzandos de Programacion 2025");
+        stage.setScene(scena);
         stage.show();
         stage.setMaximized(true);
+
     }
 
     //el padding aplica un espacidado del padre al nodo hijo
