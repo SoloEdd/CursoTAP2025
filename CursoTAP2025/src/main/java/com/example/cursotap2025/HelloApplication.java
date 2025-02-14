@@ -1,6 +1,7 @@
 package com.example.cursotap2025;
 
 import com.example.cursotap2025.vistas.Calculadora;
+import com.example.cursotap2025.vistas.VentasRestaurante;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -19,15 +20,17 @@ public class HelloApplication extends Application {
     private VBox vBox;
     private MenuBar menuBarPrincipal;
     private Menu menuCompetencia1, menuCompetencia2;
-    private MenuItem mitCalculadora;
+    private MenuItem mitCalculadora, mitRestaurate;
     private Scene scena;
-    private String teclas[] = {"7","8", "9", "*", "4", "5", "6", "/", "1", "2", "3", "+", "=", "0", ".", "-"};
+    //private String teclas[] = {"7","8", "9", "*", "4", "5", "6", "/", "1", "2", "3", "+", "=", "0", ".", "-"};
 
     void CrearUI(){
         mitCalculadora = new MenuItem("Calculadora");
+        mitRestaurate = new MenuItem("Restaurat");
         mitCalculadora.setOnAction(e -> {new Calculadora();});
+        mitRestaurate.setOnAction(actionEvent -> new VentasRestaurante());
         menuCompetencia1 = new Menu("Competencia Uno");
-        menuCompetencia1.getItems().addAll(mitCalculadora);
+        menuCompetencia1.getItems().addAll(mitCalculadora, mitRestaurate);
         menuBarPrincipal = new MenuBar();
         menuCompetencia2 = new Menu("Competencia Dos");
         menuBarPrincipal.getMenus().addAll(menuCompetencia1, menuCompetencia2);

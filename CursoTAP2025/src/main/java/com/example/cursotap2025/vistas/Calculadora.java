@@ -28,7 +28,7 @@ public class Calculadora extends Stage {
 
     private void CrearUI(){
         CreateKeyboard();
-        txtDisplay = new TextField("0");
+        txtDisplay = new TextField(" ");
         //txtDisplay.setPromptText("Digite un valor");
         txtDisplay.setEditable(false);
         txtDisplay.setAlignment(Pos.BASELINE_RIGHT);
@@ -67,4 +67,12 @@ public class Calculadora extends Stage {
         txtDisplay.appendText(strTacla);
     }
 
+    private void Calcular(String strTacla){
+        double primer_operando;
+        if(strTacla.equals("*") || strTacla.equals("/") || strTacla.equals("-") || strTacla.equals("*")){
+            primer_operando = Double.parseDouble(txtDisplay.getText());
+
+        }
+
+    }
 }
