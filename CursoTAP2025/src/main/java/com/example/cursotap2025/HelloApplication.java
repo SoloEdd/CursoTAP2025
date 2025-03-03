@@ -1,6 +1,8 @@
 package com.example.cursotap2025;
 
+import com.example.cursotap2025.models.DbConnection;
 import com.example.cursotap2025.vistas.Calculadora;
+import com.example.cursotap2025.vistas.ListaClientes;
 import com.example.cursotap2025.vistas.VentasRestaurante;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -22,13 +24,13 @@ public class HelloApplication extends Application {
     private Menu menuCompetencia1, menuCompetencia2;
     private MenuItem mitCalculadora, mitRestaurate;
     private Scene scena;
-    //private String teclas[] = {"7","8", "9", "*", "4", "5", "6", "/", "1", "2", "3", "+", "=", "0", ".", "-"};
+
 
     void CrearUI(){
         mitCalculadora = new MenuItem("Calculadora");
-        mitRestaurate = new MenuItem("Restaurat");
-        mitCalculadora.setOnAction(e -> {new Calculadora();});
-        mitRestaurate.setOnAction(actionEvent -> new VentasRestaurante());
+        mitRestaurate = new MenuItem("Restaurante");
+        mitCalculadora.setOnAction(e -> {new Calculadora(); });
+        mitRestaurate.setOnAction(actionEvent -> new ListaClientes());
         menuCompetencia1 = new Menu("Competencia Uno");
         menuCompetencia1.getItems().addAll(mitCalculadora, mitRestaurate);
         menuBarPrincipal = new MenuBar();
@@ -41,12 +43,12 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        DbConnection.createConnection();
         CrearUI();
         stage.setTitle("Topicos Avanzandos de Programacion 2025");
         stage.setScene(scena);
         stage.show();
         stage.setMaximized(true);
-
     }
 
     //el padding aplica un espacidado del padre al nodo hijo

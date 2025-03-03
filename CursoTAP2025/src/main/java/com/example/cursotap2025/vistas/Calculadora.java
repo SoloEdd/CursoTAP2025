@@ -1,5 +1,6 @@
 package com.example.cursotap2025.vistas;
 
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Calculadora extends Stage {
 
@@ -17,6 +19,11 @@ public class Calculadora extends Stage {
     private GridPane gdpTeclado;
     private Button[][] arrBtnTeclado;
     String strTeclas[] = {"7","8","9","*","4","5","6","/","1","2","3","+","=","0",".","-"};
+    private String operador = "";
+    private String primerOperando = "";
+    private boolean nuevoIngreso = false;
+    private boolean puntoPresente = false;
+
 
     public Calculadora() {
         CrearUI();
@@ -28,8 +35,8 @@ public class Calculadora extends Stage {
 
     private void CrearUI(){
         CreateKeyboard();
-        txtDisplay = new TextField(" ");
-        //txtDisplay.setPromptText("Digite un valor");
+        txtDisplay = new TextField();
+        txtDisplay.setPromptText("Digite un valor");
         txtDisplay.setEditable(false);
         txtDisplay.setAlignment(Pos.BASELINE_RIGHT);
         txtDisplay.setPadding(new Insets(0, 0, 10, 0));
@@ -37,9 +44,6 @@ public class Calculadora extends Stage {
         vbox.setSpacing(10);
         vbox.setPadding(new Insets(10));
         scene = new Scene(vbox, 230,280);
-        scene.getStylesheets().add(getClass().getResource("/Styles/Calcu.css").toExternalForm());
-
-
     }
 
     public void CreateKeyboard(){
@@ -51,9 +55,6 @@ public class Calculadora extends Stage {
         for (int i = 0; i < 4 ; i++) {
             for (int j = 0; j < 4; j++) {
                 arrBtnTeclado[i][j] = new Button(strTeclas[pos]);
-                if(strTeclas[pos].equals("*")){
-                    arrBtnTeclado[i][j].setId("fontButton");
-                }
                 int finalPos = pos;
                 arrBtnTeclado[i][j].setOnAction(event -> EventoTeclado(strTeclas[finalPos]));
                 arrBtnTeclado[i][j].setPrefSize(50,50);
@@ -63,16 +64,71 @@ public class Calculadora extends Stage {
         }
     }
 
-    private void EventoTeclado(String strTacla){
-        txtDisplay.appendText(strTacla);
+    private void EventoTeclado(String strTecla) {
+        // Si es un número o un punto decimal
+        if (strTecla.matches("[0-9]")) {
+            if (nuevoIngreso) {
+                txtDisplay.setText(strTecla);
+                nuevoIngreso = false;
+            } else {
+                txtDisplay.appendText(strTecla);
+            }
+        }
+        else if (strTecla.equals(".") && !puntoPresente) {
+            txtDisplay.appendText(strTecla);
+            puntoPresente = true; // Desactiva el punto hasta que se seleccione un operador
+        }
+        else if (strTecla.matches("[+\\-*/]")) {
+            if (!txtDisplay.getText().isEmpty()) {
+                primerOperando = txtDisplay.getText();
+                operador = strTecla;
+                nuevoIngreso = true;
+                puntoPresente = false; // Reactivar el punto para el siguiente número
+            } else {
+                txtDisplay.setText("Error: Ingrese un número");
+            }
+        }
+        else if (strTecla.equals("=")) {
+            if (!primerOperando.isEmpty() && !txtDisplay.getText().isEmpty() && !nuevoIngreso) {
+                Calcular();
+            } else {
+                txtDisplay.setText("Error: Operación inválida");
+            }
+        }
     }
 
-    private void Calcular(String strTacla){
-        double primer_operando;
-        if(strTacla.equals("*") || strTacla.equals("/") || strTacla.equals("-") || strTacla.equals("*")){
-            primer_operando = Double.parseDouble(txtDisplay.getText());
 
+
+    private void Calcular(){
+        double resultado;
+        try {
+            double num1 = Double.parseDouble(primerOperando);
+            double num2 = Double.parseDouble(txtDisplay.getText());
+            switch (operador) {
+                case "+":
+                    resultado = num1 + num2;
+                    txtDisplay.setText(String.valueOf(resultado));
+                    break;
+                case "-":
+                    resultado = num1 - num2;
+                    txtDisplay.setText(String.valueOf(resultado));
+                    break;
+                case "*":
+                    resultado = num1 * num2;
+                    txtDisplay.setText(String.valueOf(resultado));
+                    break;
+                case "/":
+                    resultado = num1 / num2;
+                    if(!(num2 == 0)){
+                        txtDisplay.setText(String.valueOf(resultado));
+                    }else {txtDisplay.setText("Error!! Denominador igual a 0");};
+                    break;
+                default:
+                    txtDisplay.setText("Error: Operación no soportada");
+            }
+        } catch (NumberFormatException e) {
+            txtDisplay.setText("Error: Número inválido");
         }
-
+        nuevoIngreso = true;
     }
 }
