@@ -23,6 +23,8 @@ public class Calculadora extends Stage {
     private String primerOperando = "";
     private boolean nuevoIngreso = false;
     private boolean puntoPresente = false;
+    private boolean operadorPresente = false;
+    private Button btnBorrar;
 
 
     public Calculadora() {
@@ -40,7 +42,10 @@ public class Calculadora extends Stage {
         txtDisplay.setEditable(false);
         txtDisplay.setAlignment(Pos.BASELINE_RIGHT);
         txtDisplay.setPadding(new Insets(0, 0, 10, 0));
-        vbox = new VBox(txtDisplay, gdpTeclado);
+        btnBorrar = new Button("Borrar");
+        btnBorrar.setPrefSize(230, 10);
+        btnBorrar.setOnAction(e -> {Borrar();});
+        vbox = new VBox(txtDisplay, gdpTeclado, btnBorrar);
         vbox.setSpacing(10);
         vbox.setPadding(new Insets(10));
         scene = new Scene(vbox, 230,280);
@@ -73,17 +78,19 @@ public class Calculadora extends Stage {
             } else {
                 txtDisplay.appendText(strTecla);
             }
+            operadorPresente = false; // Se permite seleccionar otro operador después de ingresar un número
         }
         else if (strTecla.equals(".") && !puntoPresente) {
             txtDisplay.appendText(strTecla);
-            puntoPresente = true; // Desactiva el punto hasta que se seleccione un operador
+            puntoPresente = true;
         }
-        else if (strTecla.matches("[+\\-*/]")) {
+        else if (strTecla.matches("[+\\-*/]") && !operadorPresente) {
             if (!txtDisplay.getText().isEmpty()) {
                 primerOperando = txtDisplay.getText();
                 operador = strTecla;
                 nuevoIngreso = true;
                 puntoPresente = false; // Reactivar el punto para el siguiente número
+                operadorPresente = true; // Bloquea la selección de otro operador hasta que se ingrese un número
             } else {
                 txtDisplay.setText("Error: Ingrese un número");
             }
@@ -91,13 +98,12 @@ public class Calculadora extends Stage {
         else if (strTecla.equals("=")) {
             if (!primerOperando.isEmpty() && !txtDisplay.getText().isEmpty() && !nuevoIngreso) {
                 Calcular();
+                operadorPresente = false; // Permitir ingresar un nuevo operador después del cálculo
             } else {
                 txtDisplay.setText("Error: Operación inválida");
             }
         }
     }
-
-
 
     private void Calcular(){
         double resultado;
@@ -131,4 +137,14 @@ public class Calculadora extends Stage {
         }
         nuevoIngreso = true;
     }
+
+    private void Borrar() {
+        txtDisplay.clear();  // Limpiar pantalla
+        primerOperando = "";
+        operador = "";
+        nuevoIngreso = false;
+        puntoPresente = false;
+        operadorPresente = false;
+    }
+
 }
