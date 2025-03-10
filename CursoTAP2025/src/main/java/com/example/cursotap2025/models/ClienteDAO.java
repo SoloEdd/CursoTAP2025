@@ -2,9 +2,7 @@ package com.example.cursotap2025.models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ClienteDAO {
@@ -16,8 +14,8 @@ public class ClienteDAO {
     private String emailCte;
 
     public void insertCliente() {
-        String query = "insert into cliente(nomCte, telCte, direccion, emailCte) " +
-                "values(?,?,?,?)";
+        String query = "INSERT INTO cliente(nomCte, telCte, direccion, emailCte) " +
+                "values('"+nomCte+"','"+telCte+"','"+direccion+"','"+emailCte+"')";
         try{
             Statement stmt = DbConnection.connection.createStatement();
             stmt.executeUpdate(query);
@@ -37,6 +35,7 @@ public class ClienteDAO {
             e.printStackTrace();
         }
     }
+
     public void deleteCliente() {
         String query = "DELETE FROM clientes WHERE idCte = "+idCliente;
         try{
@@ -46,8 +45,9 @@ public class ClienteDAO {
             e.printStackTrace();
         }
     }
+
     public ObservableList<ClienteDAO> selectCliente() {
-        String query = "SELECT * FROM clientes";
+        String query = "SELECT * FROM cliente";
         ObservableList<ClienteDAO> listaC = FXCollections.observableArrayList();
         ClienteDAO objC;
         try {
@@ -57,8 +57,8 @@ public class ClienteDAO {
                 objC = new ClienteDAO();
                 objC.setIdCliente(res.getInt("idCte"));
                 objC.setNomCte(res.getString("nomCte"));
-                objC.setDireccion(res.getString("direccion"));
                 objC.setTelCte(res.getString("telCte"));
+                objC.setDireccion(res.getString("direccion"));
                 objC.setEmailCte(res.getString("emailCte"));
                 listaC.add(objC);
             }

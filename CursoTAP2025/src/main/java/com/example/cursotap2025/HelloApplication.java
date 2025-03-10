@@ -28,17 +28,17 @@ public class HelloApplication extends Application {
 
     void CrearUI(){
         mitCalculadora = new MenuItem("Calculadora");
-        mitRestaurate = new MenuItem("Restaurante");
         mitCalculadora.setOnAction(e -> {new Calculadora(); });
+        mitRestaurate = new MenuItem("Restaurante");
         mitRestaurate.setOnAction(actionEvent -> new ListaClientes());
         menuCompetencia1 = new Menu("Competencia Uno");
         menuCompetencia1.getItems().addAll(mitCalculadora, mitRestaurate);
-        menuBarPrincipal = new MenuBar();
         menuCompetencia2 = new Menu("Competencia Dos");
+        menuBarPrincipal = new MenuBar();
         menuBarPrincipal.getMenus().addAll(menuCompetencia1, menuCompetencia2);
         vBox = new VBox(menuBarPrincipal);
         scena = new Scene(vBox);
-        scena.getStylesheets().add(getClass().getResource("/Styles/main.css").toExternalForm());
+        scena.getStylesheets().add(getClass().getResource("/Styles/main.css").toString());
     }
 
     @Override
