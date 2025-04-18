@@ -3,6 +3,7 @@ package com.example.cursotap2025.vistas;
 import com.example.cursotap2025.componentes.ButtonCell;
 import com.example.cursotap2025.componentes.ButtonCellEmpleado;
 import com.example.cursotap2025.models.EmpleadoDAO;
+import com.example.cursotap2025.models.PuestoTrabajoDAO;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,29 +16,47 @@ public class ListaEmpleado extends Stage {
 
     private ToolBar tblMenu;
     private TableView<EmpleadoDAO> tbvEmpleados;
+    private TableView<PuestoTrabajoDAO> tbvPuestos;
     private VBox vBox;
     private Scene scene;
-    private Button btnAgregar;
+    private Button btnAgregarEmpleado, btnAgregarPuestoTrabajo;
 
     public ListaEmpleado() {
         CrearUI();
-        this.setTitle("Lista de empleados");
+        this.setTitle("Lista de empleados y roles");
         this.setScene(scene);
         this.show();
     }
 
     private void CrearUI() {
         tbvEmpleados = new TableView<>();
-        btnAgregar = new Button();
+        tbvPuestos = new TableView<>();
+        btnAgregarEmpleado = new Button();
         ImageView imv = new ImageView(getClass().getResource("/images/person_add_icon.png").toString());
         imv.setFitWidth(20);
         imv.setFitHeight(20);
-        btnAgregar.setGraphic(imv);
-        btnAgregar.setOnAction(actionEvent -> new Empleado(tbvEmpleados, null));
-        tblMenu = new ToolBar(btnAgregar);
+        btnAgregarEmpleado.setGraphic(imv);
+        btnAgregarEmpleado.setOnAction(actionEvent -> new Empleado(tbvEmpleados, null));
+        btnAgregarPuestoTrabajo = new Button("Agregar Puesto Trabajo");
+        btnAgregarPuestoTrabajo.setOnAction(actionEvent -> new PuestoTrabajo(tbvPuestos, null));
+        tblMenu = new ToolBar(btnAgregarEmpleado, btnAgregarPuestoTrabajo);
+        CreateTablePuesto();
         CreateTable();
-        vBox = new VBox(tblMenu, tbvEmpleados);
+        vBox = new VBox(tblMenu, tbvPuestos,tbvEmpleados);
         scene = new Scene(vBox, 800,800);
+    }
+
+    private void CreateTablePuesto() {
+        PuestoTrabajoDAO empDAO = new PuestoTrabajoDAO();
+        TableColumn<PuestoTrabajoDAO, Integer> colId = new TableColumn<>("Id");
+        colId.setCellValueFactory(new PropertyValueFactory<>("id_puesto"));
+        TableColumn<PuestoTrabajoDAO, String> colNombrePuesto = new TableColumn<>("Puesto de trabajo");
+        colNombrePuesto.setCellValueFactory(new PropertyValueFactory<>("nombre_puesto"));
+        TableColumn<PuestoTrabajoDAO, String> colDescripcion = new TableColumn<>("Descripcion");
+        colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+
+        tbvPuestos.getColumns().addAll(colId, colNombrePuesto, colDescripcion);
+        tbvPuestos.setItems(empDAO.selectAllPuestoTrabajo());
     }
 
     private void CreateTable() {
