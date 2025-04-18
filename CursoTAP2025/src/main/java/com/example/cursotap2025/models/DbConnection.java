@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 public class DbConnection {
 
     private static String DB = "restaurante";
-    private static String User = "admin";
+    private static String User = "gerente";
     private static String Password = "123";
     private static String Host = "localhost";
     private static int Port = 3306;
