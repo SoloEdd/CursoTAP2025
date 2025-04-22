@@ -88,10 +88,5 @@ public class Empleado extends Stage {
         });
         vBox = new VBox(txtPrimerApellido, txtSegundoApellido, txtNombre, txtCURP, txtRFC, txtSueldo , txtCelEmpl, txtNSS, txtHorario, txtFechaIngreso, btnGuardar);
         scene = new Scene(vBox, 800, 800);
-
     }
-
-
-
-
 }

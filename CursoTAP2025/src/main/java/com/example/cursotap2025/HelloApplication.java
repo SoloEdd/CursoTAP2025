@@ -1,10 +1,7 @@
 package com.example.cursotap2025;
 
 import com.example.cursotap2025.models.DbConnection;
-import com.example.cursotap2025.vistas.Calculadora;
-import com.example.cursotap2025.vistas.ListaClientes;
-import com.example.cursotap2025.vistas.ListaEmpleado;
-import com.example.cursotap2025.vistas.VentasRestaurante;
+import com.example.cursotap2025.vistas.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -31,7 +28,7 @@ public class HelloApplication extends Application {
         mitCalculadora = new MenuItem("Calculadora");
         mitCalculadora.setOnAction(e -> {new Calculadora(); });
         mitRestaurate = new MenuItem("Restaurante");
-        mitRestaurate.setOnAction(actionEvent -> new ListaEmpleado());
+        mitRestaurate.setOnAction(actionEvent -> new ListaProductos());
         menuCompetencia1 = new Menu("Competencia Uno");
         menuCompetencia1.getItems().addAll(mitCalculadora, mitRestaurate);
         menuCompetencia2 = new Menu("Competencia Dos");
