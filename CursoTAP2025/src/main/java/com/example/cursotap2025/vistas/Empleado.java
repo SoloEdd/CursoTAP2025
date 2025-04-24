@@ -1,6 +1,7 @@
 package com.example.cursotap2025.vistas;
 
 import com.example.cursotap2025.models.EmpleadoDAO;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
@@ -86,7 +87,10 @@ public class Empleado extends Stage {
             tbvEmpleados.refresh();
             this.close();
         });
-        vBox = new VBox(txtPrimerApellido, txtSegundoApellido, txtNombre, txtCURP, txtRFC, txtSueldo , txtCelEmpl, txtNSS, txtHorario, txtFechaIngreso, btnGuardar);
+        vBox = new VBox(10, txtPrimerApellido, txtSegundoApellido, txtNombre, txtCURP, txtRFC, txtSueldo , txtCelEmpl, txtNSS, txtHorario, txtFechaIngreso, btnGuardar);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.getStyleClass().add("vbox");
         scene = new Scene(vBox, 800, 800);
+        scene.getStylesheets().add(getClass().getResource("/Styles/empleado_style.css").toExternalForm());
     }
 }

@@ -1,0 +1,39 @@
+.root {
+    -fx-background-color: #ecf0f1;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-padding: 20;
+}
+
+.text-field {
+    -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
+    -fx-background-color: white;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.05), 4, 0, 0, 2);
+}
+
+.text-field:focused {
+    -fx-border-color: #2980b9;
+    -fx-effect: dropshadow(one-pass-box, rgba(41,128,185,0.3), 8, 0, 0, 2);
+}
+
+.button {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #229954;
+}
+
+.vbox {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}

@@ -64,7 +64,6 @@ public class ListaClientes extends Stage {
                 return new ButtonCell("Eliminar");
             }
         });
-
         tbvClientes.getColumns().addAll(tbcNomCte,tbcDireccion,tbcTel,tbcEmail, tbcEditar,tbcEliminar);
         tbvClientes.setItems(obC.selectCliente());
 

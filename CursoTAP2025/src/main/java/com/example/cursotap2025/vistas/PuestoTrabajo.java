@@ -1,6 +1,7 @@
 package com.example.cursotap2025.vistas;
 
 import com.example.cursotap2025.models.PuestoTrabajoDAO;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
@@ -51,7 +52,10 @@ public class PuestoTrabajo extends Stage {
             tbvPuestos.refresh();
             this.close();
         });
-        vbox = new VBox(txtNombrePuesto, txtDescripcion, btnGuardar);
+        vbox = new VBox(5, txtNombrePuesto, txtDescripcion, btnGuardar);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.getStyleClass().add("vbox");
         scene = new Scene(vbox, 600,600);
+        scene.getStylesheets().add(getClass().getResource("/Styles/empleado_style.css").toExternalForm());
     }
 }
