@@ -28,7 +28,7 @@ public class HelloApplication extends Application {
         mitCalculadora = new MenuItem("Calculadora");
         mitCalculadora.setOnAction(e -> {new Calculadora(); });
         mitRestaurate = new MenuItem("Restaurante");
-        mitRestaurate.setOnAction(actionEvent -> new ListaProductos());
+        mitRestaurate.setOnAction(actionEvent -> new LoginAdmin());
         menuCompetencia1 = new Menu("Competencia Uno");
         menuCompetencia1.getItems().addAll(mitCalculadora, mitRestaurate);
         menuCompetencia2 = new Menu("Competencia Dos");

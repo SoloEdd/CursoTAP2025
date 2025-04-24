@@ -1,6 +1,5 @@
 package com.example.cursotap2025.vistas;
 
-import com.example.cursotap2025.componentes.ButtonCell;
 import com.example.cursotap2025.componentes.ButtonCellEmpleado;
 import com.example.cursotap2025.models.EmpleadoDAO;
 import com.example.cursotap2025.models.PuestoTrabajoDAO;
@@ -44,6 +43,7 @@ public class ListaEmpleado extends Stage {
         CreateTable();
         vBox = new VBox(tblMenu, tbvPuestos,tbvEmpleados);
         scene = new Scene(vBox, 800,800);
+        scene.getStylesheets().add(getClass().getResource("/Styles/Empleados.css").toExternalForm());
     }
 
     private void CreateTablePuesto() {
