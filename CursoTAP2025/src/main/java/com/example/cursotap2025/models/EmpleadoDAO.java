@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class EmpleadoDAO {
@@ -21,6 +22,8 @@ public class EmpleadoDAO {
     private String horario;
     private String fecha_ingreso;
     private int id_puesto;
+    private int numVentas;
+    private double totalVendido;
 
     
     public void insertarEmpleado() {
@@ -93,6 +96,39 @@ public class EmpleadoDAO {
             e.printStackTrace();
         }
         return listaEmpleado;
+    }
+
+    public static EmpleadoDAO obtenerEmpleadoTopVentas() {
+        EmpleadoDAO empleado = null;
+        String query = """
+        SELECT e.*, 
+               COUNT(o.id_orden) AS num_ventas,
+               SUM(od.monto) AS total_vendido
+        FROM empleado e
+        JOIN orden o ON e.id_empleado = o.id_empleado
+        JOIN orden_detalle od ON o.id_orden = od.id_orden
+        GROUP BY e.id_empleado
+        ORDER BY total_vendido DESC
+        LIMIT 1
+    """;
+
+        try {
+            Statement stmt = DbConnection.connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                empleado = new EmpleadoDAO();
+                empleado.setId_empleado(rs.getInt("id_empleado"));
+                empleado.setNombre(rs.getString("nombre"));
+                empleado.setPrimer_apellido(rs.getString("primer_apellido"));
+                empleado.setSegundo_apellido(rs.getString("segundo_apellido"));
+                empleado.setTotalVendido(rs.getDouble("total_vendido"));
+                empleado.setNumVentas(rs.getInt("num_ventas"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return empleado;
     }
 
 
@@ -190,5 +226,21 @@ public class EmpleadoDAO {
 
     public void setId_puesto(int id_puesto) {
         this.id_puesto = id_puesto;
+    }
+
+    public int getNumVentas() {
+        return numVentas;
+    }
+
+    public void setNumVentas(int numVentas) {
+        this.numVentas = numVentas;
+    }
+
+    public double getTotalVendido() {
+        return totalVendido;
+    }
+
+    public void setTotalVendido(double totalVendido) {
+        this.totalVendido = totalVendido;
     }
 }

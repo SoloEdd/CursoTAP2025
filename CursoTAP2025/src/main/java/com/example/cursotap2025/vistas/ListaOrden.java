@@ -1,36 +1,26 @@
 package com.example.cursotap2025.vistas;
 
 import com.example.cursotap2025.models.OrdenDAO;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
 import java.sql.Timestamp;
 
-public class ListaOrden extends Stage {
+public class ListaOrden extends VBox {
 
     private TableView<OrdenDAO> tbvOrdenes;
-    private VBox vBox;
-    private Scene scene;
-    private Button eliminarOrden;
 
     public ListaOrden() {
         CrearUI();
-        this.setTitle("Lista de Ordenes");
-        this.setScene(scene);
-        this.show();
     }
 
     private void CrearUI() {
         tbvOrdenes = new TableView<>();
-        eliminarOrden = new Button("Eliminar");
         CreateTable();
-        vBox = new VBox(tbvOrdenes);
-        scene = new Scene(vBox, 800, 600);
+        this.getChildren().add(tbvOrdenes);
+        this.setSpacing(10);
+        this.getStylesheets().add(getClass().getResource("/Styles/Ordenes.css").toExternalForm());
     }
 
     private void CreateTable() {
@@ -52,6 +42,4 @@ public class ListaOrden extends Stage {
         tbvOrdenes.getColumns().addAll(colIdOrden, colCte, colEmailCte, colNoMesa, colIdEmpleado, colNombreEmpleado, colFecha);
         tbvOrdenes.setItems(ordenDAO.selectOrden());
     }
-
-
 }

@@ -1,0 +1,33 @@
+.root {
+    -fx-background-color: #f1f3f5;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+#menuTitulo {
+    -fx-font-size: 20px;
+    -fx-text-fill: #343a40;
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-pref-width: 200px;
+    -fx-font-size: 14px;
+    -fx-background-color: #4dabf7;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #339af0;
+}
+
+#cerrarSesion {
+    -fx-background-color: #f03e3e;
+}
+
+#cerrarSesion:hover {
+    -fx-background-color: #c92a2a;
+}

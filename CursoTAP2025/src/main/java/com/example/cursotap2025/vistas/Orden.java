@@ -36,6 +36,7 @@ public class Orden extends Stage {
         txtFecha = new TextField();
         txtFecha.setPromptText("Fecha");
         vBox = new VBox(txtidCte, txtemailCliente, txtIdOrden, txtNombreEmpleado, txtFecha);
+        scene = new Scene(vBox);
     }
 
 }

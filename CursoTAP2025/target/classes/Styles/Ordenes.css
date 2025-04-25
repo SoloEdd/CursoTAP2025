@@ -1,0 +1,56 @@
+.root {
+    -fx-background-color: #fdf6f6;
+    -fx-padding: 10;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #7B1E3E;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0.2, 2, 2);
+}
+
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #7B1E3E, #A93252);
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 35px;
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell {
+    -fx-padding: 6 10 6 10;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-row-cell:filled:selected, .table-cell:filled:selected {
+    -fx-background-color: #D689A0;
+    -fx-text-fill: white;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #FDEDEC;
+}
+
+.button {
+    -fx-background-color: #7B1E3E;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 6 12;
+}
+
+.button:hover {
+    -fx-background-color: #A93252;
+}
+
+.tool-bar {
+    -fx-background-color: #f8d7da;
+    -fx-border-color: #7B1E3E;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+}

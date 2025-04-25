@@ -56,11 +56,11 @@ public class OrdenDAO {
     public ObservableList<OrdenDAO> selectOrden() {
         OrdenDAO objOrden;
         ObservableList<OrdenDAO> listOrden = FXCollections.observableArrayList();
-        String query = "SELECT o.id_orden, o.idCte, c.emailCte, o.no_mesa, o.id_empleadoc, " +
+        String query = "SELECT o.id_orden, o.idCte, c.emailCte, o.no_mesa, o.id_empleado, " +
                 "e.nombre AS nombreEmpleado, o.fecha " +
                 "FROM orden o " +
                 "JOIN cliente c ON o.idCte = c.idCte " +
-                "JOIN empleado e ON o.id_empleadoc = e.id_empleadoc";
+                "JOIN empleado e ON o.id_empleado = e.id_empleado";
 
         try {
             PreparedStatement ps = DbConnection.connection.prepareStatement(query);
@@ -71,7 +71,7 @@ public class OrdenDAO {
                 objOrden.setIdCte(rs.getInt("idCte"));
                 objOrden.setEmailCliente(rs.getString("emailCte"));
                 objOrden.setNo_mesa(rs.getInt("no_mesa"));
-                objOrden.setId_empleado(rs.getInt("id_empleadoc"));
+                objOrden.setId_empleado(rs.getInt("id_empleado"));
                 objOrden.setNombreEmpleado(rs.getString("nombreEmpleado"));
                 objOrden.setFecha(rs.getTimestamp("fecha"));
                 listOrden.add(objOrden);

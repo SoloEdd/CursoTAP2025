@@ -13,7 +13,7 @@ public class PuestoTrabajoDAO {
     private String descripcion;
 
     public void insertarPuestoTrabajo() {
-        String query = "INSERT INTO puesto_trabajo(nombre_puesto,descripcion) VALUES(?,?)";
+        String query = "INSERT INTO puesto_trabajo(nombre_puesto,descripcion) VALUES('"+nombre_puesto+"','"+descripcion+"')";
         try{
             Statement stmt = DbConnection.connection.createStatement();
             stmt.executeUpdate(query);

@@ -1,8 +1,10 @@
 package com.example.cursotap2025.vistas;
 
 import com.example.cursotap2025.componentes.ButtonCellEmpleado;
+import com.example.cursotap2025.componentes.ButtonCellPuesto;
 import com.example.cursotap2025.models.EmpleadoDAO;
 import com.example.cursotap2025.models.PuestoTrabajoDAO;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -11,23 +13,21 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class ListaEmpleado extends Stage {
+public class ListaEmpleado extends VBox {
 
     private ToolBar tblMenu;
     private TableView<EmpleadoDAO> tbvEmpleados;
     private TableView<PuestoTrabajoDAO> tbvPuestos;
-    private VBox vBox;
-    private Scene scene;
     private Button btnAgregarEmpleado, btnAgregarPuestoTrabajo;
+    private Label lblPuesto, lblEmpleado;
 
     public ListaEmpleado() {
         CrearUI();
-        this.setTitle("Lista de empleados y roles");
-        this.setScene(scene);
-        this.show();
     }
 
     private void CrearUI() {
+        lblPuesto = new Label("Lista de puesto de trabajo");
+        lblEmpleado = new Label("Lista de empleados");
         tbvEmpleados = new TableView<>();
         tbvPuestos = new TableView<>();
         btnAgregarEmpleado = new Button();
@@ -41,9 +41,11 @@ public class ListaEmpleado extends Stage {
         tblMenu = new ToolBar(btnAgregarEmpleado, btnAgregarPuestoTrabajo);
         CreateTablePuesto();
         CreateTable();
-        vBox = new VBox(tblMenu, tbvPuestos,tbvEmpleados);
-        scene = new Scene(vBox, 800,800);
-        scene.getStylesheets().add(getClass().getResource("/Styles/Empleados.css").toExternalForm());
+
+        this.setSpacing(10);
+        this.setPadding(new Insets(15));
+        this.getChildren().addAll(tblMenu, lblPuesto, tbvPuestos,lblEmpleado, tbvEmpleados);
+        this.getStylesheets().add(getClass().getResource("/Styles/Empleados.css").toExternalForm());
     }
 
     private void CreateTablePuesto() {
@@ -54,8 +56,23 @@ public class ListaEmpleado extends Stage {
         colNombrePuesto.setCellValueFactory(new PropertyValueFactory<>("nombre_puesto"));
         TableColumn<PuestoTrabajoDAO, String> colDescripcion = new TableColumn<>("Descripcion");
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        TableColumn<PuestoTrabajoDAO, String> colEditar = new TableColumn<>("Editar informacion");
+        colEditar.setCellFactory(new Callback<TableColumn<PuestoTrabajoDAO, String>, TableCell<PuestoTrabajoDAO, String>>() {
+            @Override
+            public TableCell<PuestoTrabajoDAO, String> call(TableColumn<PuestoTrabajoDAO, String> puestoTrabajoDAOStringTableColumn) {
+                return new ButtonCellPuesto("Editar");
+            }
+        });
 
-        tbvPuestos.getColumns().addAll(colId, colNombrePuesto, colDescripcion);
+        TableColumn<PuestoTrabajoDAO, String> colEliminar = new TableColumn<>("Eliminar puesto");
+        colEliminar.setCellFactory(new Callback<TableColumn<PuestoTrabajoDAO, String>, TableCell<PuestoTrabajoDAO, String>>() {
+            @Override
+            public TableCell<PuestoTrabajoDAO, String> call(TableColumn<PuestoTrabajoDAO, String> puestoTrabajoDAOStringTableColumn) {
+                return new ButtonCellPuesto("Eliminar");
+            }
+        });
+
+        tbvPuestos.getColumns().addAll(colId, colNombrePuesto, colDescripcion, colEditar, colEliminar);
         tbvPuestos.setItems(empDAO.selectAllPuestoTrabajo());
     }
 
@@ -101,5 +118,4 @@ public class ListaEmpleado extends Stage {
         tbvEmpleados.getColumns().addAll(colPrimerApellido, colSegundoApellido, colNombre, colCURP, colRFC, colSueldo, colTelefono, colNSS, colHorario, colFecha, colRol, colEditar, colEliminar);
         tbvEmpleados.setItems(objEmpleado.selectEmpleado());
     }
-
 }

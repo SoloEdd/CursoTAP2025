@@ -42,12 +42,12 @@ public class PuestoTrabajo extends Stage {
         btnGuardar.setOnAction(e -> {
             objPuesto.setNombre_puesto(txtNombrePuesto.getText());
             objPuesto.setDescripcion(txtDescripcion.getText());
+
             if(objPuesto.getId_puesto() > 0){
                 objPuesto.updatePuestoTrabajo();
             }else {
-                objPuesto.deletePuestoTrabajo();
+                objPuesto.insertarPuestoTrabajo();
             }
-
             tbvPuestos.setItems(objPuesto.selectAllPuestoTrabajo());
             tbvPuestos.refresh();
             this.close();

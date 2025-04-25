@@ -1,7 +1,6 @@
 package com.example.cursotap2025.vistas;
 
 import com.example.cursotap2025.models.AdminDAO;
-import com.example.cursotap2025.models.DbConnection;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -67,7 +66,7 @@ public class LoginAdmin  extends Stage {
             AdminDAO dao = new AdminDAO();
             if (dao.validarAdmin(user, pass)) {
                 mostrarAlerta(Alert.AlertType.INFORMATION, "Login exitoso", "Bienvenido, " + user + "!");
-                new ListaEmpleado();
+                new OpcionesAdmin();
                 this.close();
 
             } else {

@@ -11,20 +11,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ListaProductos extends Stage {
+public class ListaProductos extends VBox {
 
     private ToolBar toolBar;
     private TableView<CategoriaDAO> tbvCategoria;
     private TableView<ProductoDAO> tbvProducto;
-    private VBox vBox;
-    private Scene scene;
+
     private Button btnAgregarCategoria, btnAgregarProducto;
 
     public ListaProductos(){
         CrearUI();
-        this.setTitle("Categorias y lista de productos");
-        this.setScene(scene);
-        this.show();
     }
 
     private void CrearUI(){
@@ -37,8 +33,11 @@ public class ListaProductos extends Stage {
         toolBar = new ToolBar(btnAgregarCategoria, btnAgregarProducto);
         CreateTableCategoria();
         CreateTableProductos();
-        vBox = new VBox(toolBar, tbvCategoria, tbvProducto);
-        scene = new Scene(vBox, 800, 600);
+
+        this.getChildren().addAll(toolBar, tbvCategoria, tbvProducto);
+        this.setSpacing(10);
+        this.getStylesheets().add(getClass().getResource("/Styles/ListaProductos.css").toExternalForm());
+
     }
 
     private void CreateTableCategoria(){
