@@ -24,6 +24,8 @@ public class EmpleadoDAO {
     private int id_puesto;
     private int numVentas;
     private double totalVendido;
+    private String usuario;
+    private String password;
 
     
     public void insertarEmpleado() {
@@ -36,6 +38,7 @@ public class EmpleadoDAO {
             e.printStackTrace();
         }
     }
+
     public void updateEmpleado() {
         String query = "UPDATE empleado SET primer_apellido = ?, segundo_apellido = ?, nombre = ?, curp = ?, rfc = ?, sueldo = ?, celEmp = ?, nssEmp = ?, horario = ?, fecha_ingreso = ?, id_puesto = ? WHERE id_empleado = ?";
         try {
@@ -129,6 +132,30 @@ public class EmpleadoDAO {
         }
 
         return empleado;
+    }
+
+    public static EmpleadoDAO autenticar(String usuario, String password) {
+        String query = "SELECT * FROM empleado WHERE usuario = ? AND password = ?";
+        try {
+            PreparedStatement ps = DbConnection.connection.prepareStatement(query);
+            ps.setString(1, usuario);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                EmpleadoDAO empleado = new EmpleadoDAO();
+                empleado.setId_empleado(rs.getInt("id_empleado"));
+                empleado.setNombre(rs.getString("nombre"));
+                empleado.setPrimer_apellido(rs.getString("primer_apellido"));
+                empleado.setSegundo_apellido(rs.getString("segundo_apellido"));
+                empleado.setUsuario(rs.getString("usuario"));
+                empleado.setId_puesto(rs.getInt("id_puesto"));
+                return empleado;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
@@ -242,5 +269,21 @@ public class EmpleadoDAO {
 
     public void setTotalVendido(double totalVendido) {
         this.totalVendido = totalVendido;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
