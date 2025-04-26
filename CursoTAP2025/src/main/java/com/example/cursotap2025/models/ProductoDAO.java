@@ -41,6 +41,17 @@ public class ProductoDAO {
         }
     }
 
+    public void deleteProducto() {
+        String query = "DELETE FROM producto WHERE id_producto=" + id_producto;
+        try{
+            Statement stmt = DbConnection.connection.createStatement();
+            stmt.executeUpdate(query);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
     public ObservableList<ProductoDAO> selectProducto() {
         String query = "SELECT * FROM producto";
         ObservableList<ProductoDAO> productos = FXCollections.observableArrayList();

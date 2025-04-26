@@ -49,7 +49,7 @@ public class Categoria extends Stage {
             this.close();
         });
         vBox = new VBox(txtNombreCategoria, txtDescripcionCategoria, btnGuardarCategoria);
-        scene = new Scene(vBox);
+        scene = new Scene(vBox, 400, 400);
     }
 
 

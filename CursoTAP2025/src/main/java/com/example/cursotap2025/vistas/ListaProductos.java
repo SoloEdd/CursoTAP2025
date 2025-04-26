@@ -1,15 +1,15 @@
 package com.example.cursotap2025.vistas;
 
+import com.example.cursotap2025.componentes.ButtonCellCategoria;
+import com.example.cursotap2025.componentes.ButtonCellProducto;
 import com.example.cursotap2025.models.CategoriaDAO;
 import com.example.cursotap2025.models.ProductoDAO;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class ListaProductos extends VBox {
 
@@ -48,7 +48,21 @@ public class ListaProductos extends VBox {
         colNombreCategoria.setCellValueFactory(new PropertyValueFactory<>("nombreCategoria"));
         TableColumn<CategoriaDAO, String> colDescripcionCategoria = new TableColumn<>("Descripcion");
         colDescripcionCategoria.setCellValueFactory(new PropertyValueFactory<>("descripcionCategoria"));
-        tbvCategoria.getColumns().addAll(colIdCategoria, colNombreCategoria, colDescripcionCategoria);
+        TableColumn<CategoriaDAO, String> colEditar = new TableColumn<>("Editar");
+        colEditar.setCellFactory(new Callback<TableColumn<CategoriaDAO, String>, TableCell<CategoriaDAO, String>>() {
+            @Override
+            public TableCell<CategoriaDAO, String> call(TableColumn<CategoriaDAO, String> categoriaDAOStringTableColumn) {
+                return new ButtonCellCategoria("Editar");
+            }
+        });
+        TableColumn<CategoriaDAO, String> colEliminar = new TableColumn<>("Eliminar");
+        colEliminar.setCellFactory(new Callback<TableColumn<CategoriaDAO, String>, TableCell<CategoriaDAO, String>>() {
+            @Override
+            public TableCell<CategoriaDAO, String> call(TableColumn<CategoriaDAO, String> categoriaDAOStringTableColumn) {
+                return new ButtonCellCategoria("Eliminar");
+            }
+        });
+        tbvCategoria.getColumns().addAll(colIdCategoria, colNombreCategoria, colDescripcionCategoria, colEditar, colEliminar);
         tbvCategoria.setItems(objCategoria.selectCategoria());
     }
 
@@ -64,7 +78,22 @@ public class ListaProductos extends VBox {
         colCosto.setCellValueFactory(new PropertyValueFactory<>("costo"));
         TableColumn<ProductoDAO, Integer> colIdCategoria = new TableColumn<>("Categoria");
         colIdCategoria.setCellValueFactory(new PropertyValueFactory<>("id_categoria"));
-        tbvProducto.getColumns().addAll(colIdProducto, colNombreProducto, colPrecio, colCosto, colIdCategoria);
+        TableColumn<ProductoDAO, String> colEditar = new TableColumn<>("Editar");
+        colEditar.setCellFactory(new Callback<TableColumn<ProductoDAO, String>, TableCell<ProductoDAO, String>>() {
+            @Override
+            public TableCell<ProductoDAO, String> call(TableColumn<ProductoDAO, String> productoDAOStringTableColumn) {
+                return new ButtonCellProducto("Editar");
+            }
+        });
+        TableColumn<ProductoDAO, String> colEliminar = new TableColumn<>("Eliminar");
+        colEliminar.setCellFactory(new Callback<TableColumn<ProductoDAO, String>, TableCell<ProductoDAO, String>>() {
+            @Override
+            public TableCell<ProductoDAO, String> call(TableColumn<ProductoDAO, String> productoDAOStringTableColumn) {
+                return new ButtonCellProducto("Eliminar");
+            }
+        });
+
+        tbvProducto.getColumns().addAll(colIdProducto, colNombreProducto, colPrecio, colCosto, colIdCategoria, colEditar, colEliminar);
         tbvProducto.setItems(objProducto.selectProducto());
     }
 
