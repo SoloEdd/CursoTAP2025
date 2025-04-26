@@ -1,6 +1,8 @@
 package com.example.cursotap2025.vistas;
 
 import com.example.cursotap2025.models.CategoriaDAO;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
@@ -48,10 +50,12 @@ public class Categoria extends Stage {
             tbvCategoria.refresh();
             this.close();
         });
-        vBox = new VBox(txtNombreCategoria, txtDescripcionCategoria, btnGuardarCategoria);
+        vBox = new VBox( txtNombreCategoria, txtDescripcionCategoria, btnGuardarCategoria);
+        vBox.setSpacing(10);
+        vBox.setPadding(new Insets(10, 10, 10, 10));
+        vBox.setAlignment(Pos.CENTER);
         scene = new Scene(vBox, 400, 400);
+        scene.getStylesheets().add(getClass().getResource("/Styles/categoria.css").toExternalForm());
+
     }
-
-
-
 }

@@ -1,6 +1,7 @@
 package com.example.cursotap2025.vistas;
 
 import com.example.cursotap2025.models.ProductoDAO;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -59,6 +60,9 @@ public class Producto extends Stage {
         });
         vBox = new VBox(txtNombreProducto, txtPrecioProducto, txtCostoProducto, txtCategoriaProducto, btnAgregarProducto);
         vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(10);
+        vBox.setPadding(new Insets(10, 10, 10, 10));
         scene = new Scene(vBox, 400,400);
+        scene.getStylesheets().add(getClass().getResource("/Styles/Categoria.css").toExternalForm());
     }
 }

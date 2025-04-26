@@ -1,6 +1,7 @@
 package com.example.cursotap2025.vistas;
 
 import com.example.cursotap2025.models.ClienteDAO;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -62,8 +63,10 @@ public class Cliente extends Stage {
             tbvClientes.refresh();
             this.close();
         });
-        vBox = new VBox(5, txtNomCte,txtDireccion,txtTelCte,txtEmail,btnGuardar);
+        vBox = new VBox(txtNomCte,txtDireccion,txtTelCte,txtEmail,btnGuardar);
         vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(10);
+        vBox.setPadding(new Insets(10, 10, 10, 10));
         escena = new Scene(vBox,600,600);
         escena.getStylesheets().add(getClass().getResource("/Styles/cliente.css").toExternalForm());
     }
