@@ -29,7 +29,7 @@ public class ListaProductos extends VBox {
         btnAgregarCategoria = new Button("Agregar Categoria");
         btnAgregarProducto = new Button("Agregar Producto");
         btnAgregarCategoria.setOnAction(e -> new Categoria(tbvCategoria, null));
-        btnAgregarProducto.setOnAction(e -> {});
+        btnAgregarProducto.setOnAction(e -> new Producto(tbvProducto, null));
         toolBar = new ToolBar(btnAgregarCategoria, btnAgregarProducto);
         CreateTableCategoria();
         CreateTableProductos();

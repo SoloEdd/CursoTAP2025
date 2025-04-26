@@ -1,5 +1,6 @@
 package com.example.cursotap2025.vistas;
 
+import com.example.cursotap2025.models.GeneradorReporteVentasDia;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -52,8 +53,19 @@ public class OpcionesAdmin extends Stage {
             root.setRight(new EmpleadoTop());
         });
         btnClientes.setOnAction(e -> mostrarVista(new ListaClientes()));
-        btnProductos.setOnAction(e -> mostrarVista(new ListaProductos()));
-        btnOrdenes.setOnAction(e -> mostrarVista(new ListaOrden()));
+        btnProductos.setOnAction(e -> {
+            mostrarVista(new ListaProductos());
+            root.setRight(new ProductoTop());
+        });
+        btnOrdenes.setOnAction(e -> {
+            mostrarVista(new ListaOrden());
+            Button btnReporteVentas = new Button("Generar Reporte del Día");
+            btnReporteVentas.setOnAction(event -> GeneradorReporteVentasDia.generarReporte());
+
+            VBox rightPanel = new VBox(20, btnReporteVentas);
+            rightPanel.setPadding(new Insets(15));
+            root.setRight(rightPanel);
+        });
         btnCerrarSesion.setOnAction(e -> {
             this.close();
             new LoginAdmin().show();

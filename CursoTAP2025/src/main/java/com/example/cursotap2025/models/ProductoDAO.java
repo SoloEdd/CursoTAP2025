@@ -14,6 +14,8 @@ public class ProductoDAO {
     private double precio;
     private double costo;
     private int id_categoria;
+    private int totalVendido;
+    private double ingresosTotales;
 
     public void insertProducto() {
         String query = "INSERT INTO producto (nombre_producto, precio, costo, id_categoria) VALUES (?,?,?,?)";
@@ -61,6 +63,39 @@ public class ProductoDAO {
         return productos;
     }
 
+    public static ObservableList<ProductoDAO> obtenerProductosMasVendidos() {
+        String query = """
+        SELECT p.*, 
+               SUM(od.cantidad_producto) as total_vendido,
+               SUM(od.monto) as ingresos_totales
+        FROM producto p
+        JOIN orden_detalle od ON p.id_producto = od.id_producto
+        GROUP BY p.id_producto
+        ORDER BY total_vendido DESC
+    """;
+
+        ObservableList<ProductoDAO> productos = FXCollections.observableArrayList();
+        try {
+            Statement stmt = DbConnection.connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                ProductoDAO producto = new ProductoDAO();
+                producto.setId_producto(rs.getInt("id_producto"));
+                producto.setNombre_producto(rs.getString("nombre_producto"));
+                producto.setPrecio(rs.getDouble("precio"));
+                producto.setCosto(rs.getDouble("costo"));
+                producto.setId_categoria(rs.getInt("id_categoria"));
+                // Agregamos campos temporales para el reporte
+                producto.setTotalVendido(rs.getInt("total_vendido"));
+                producto.setIngresosTotales(rs.getDouble("ingresos_totales"));
+                productos.add(producto);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return productos;
+    }
+
 
     public int getId_producto() {
         return id_producto;
@@ -100,5 +135,21 @@ public class ProductoDAO {
 
     public void setId_categoria(int id_categoria) {
         this.id_categoria = id_categoria;
+    }
+
+    public int getTotalVendido() {
+        return totalVendido;
+    }
+
+    public void setTotalVendido(int totalVendido) {
+        this.totalVendido = totalVendido;
+    }
+
+    public double getIngresosTotales() {
+        return ingresosTotales;
+    }
+
+    public void setIngresosTotales(double ingresosTotales) {
+        this.ingresosTotales = ingresosTotales;
     }
 }
