@@ -100,8 +100,8 @@ public class SistemaOrdenes extends Stage {
         btnPostres = new Button("Postres");
 
         btnBebidasAl.setOnAction(e -> mostrarProductosPorCategoria(5));
-        btnPlatillos.setOnAction(e -> mostrarProductosPorCategoria(2)); // 2 es ID de platillos
-        btnPostres.setOnAction(e -> mostrarProductosPorCategoria(3)); // 3 es ID de postres
+        btnPlatillos.setOnAction(e -> mostrarProductosPorCategoria(6));
+        btnPostres.setOnAction(e -> mostrarProductosPorCategoria(7));
 
         hBoxOpcionesMenu = new HBox(btnBebidasAl, btnPlatillos, btnPostres);
         hBoxOpcionesMenu.setAlignment(Pos.CENTER);

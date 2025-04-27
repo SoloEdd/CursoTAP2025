@@ -85,7 +85,7 @@ public class OrdenDAO {
 
     public static ObservableList<OrdenDAO> obtenerVentasDelDia() {
         String query = """
-        SELECT o.id_orden, o.idCte, c.nombre as nombreCliente, c.emailCte, 
+        SELECT o.id_orden, o.idCte, c.nomCte as nombreCliente, c.emailCte, 
                o.no_mesa, o.id_empleado, e.nombre as nombreEmpleado, 
                o.fecha, SUM(od.monto) as total
         FROM orden o
