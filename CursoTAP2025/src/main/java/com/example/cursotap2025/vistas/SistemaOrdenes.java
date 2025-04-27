@@ -2,17 +2,18 @@ package com.example.cursotap2025.vistas;
 
 import com.example.cursotap2025.models.EmpleadoDAO;
 import com.example.cursotap2025.models.ProductoDAO;
+import com.example.cursotap2025.models.ProductoPedido;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.collections.ListChangeListener;
 
 public class SistemaOrdenes extends Stage {
 
@@ -27,6 +28,10 @@ public class SistemaOrdenes extends Stage {
     private String numeroMesas [] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
     private Pane panelCentral;
     private int mesaSeleccionada = -1;
+    private ListView<HBox> lvProductosAgregados;
+    private ObservableList<ProductoPedido> productosAgregados = FXCollections.observableArrayList();
+    private Label lblTotal;
+    private double totalOrden = 0.0;
 
     public SistemaOrdenes(EmpleadoDAO empleado) {
         this.empleado = empleado;
@@ -43,6 +48,8 @@ public class SistemaOrdenes extends Stage {
         InforEmpleado();
         padMesas();
         OpcionesMenu();
+        crearPanelDerecho();
+
         hBoxGlobalTop.getChildren().addAll(vBoxEmpleado, hBoxOpcionesMenu);
         hBoxGlobalTop.setAlignment(Pos.CENTER);
         hBoxGlobalTop.setPadding(new Insets(10, 10, 10, 10));
@@ -110,7 +117,7 @@ public class SistemaOrdenes extends Stage {
             new LoginEmpleado();
         });
 
-        hBoxOpcionesMenu = new HBox(btnBebidasAl, btnPlatillos, btnPostres, btnReservaciones);
+        hBoxOpcionesMenu = new HBox(btnBebidasAl, btnPlatillos, btnPostres, btnReservaciones, btnCerrarSesion);
         hBoxOpcionesMenu.setAlignment(Pos.CENTER);
         hBoxOpcionesMenu.setPadding(new Insets(10, 10, 10, 10));
         hBoxOpcionesMenu.setSpacing(5);
@@ -187,13 +194,17 @@ public class SistemaOrdenes extends Stage {
             mostrarMensajeCentral("Seleccione una mesa primero");
             return;
         }
-
-        // Aquí implementarías la lógica para agregar el producto a la orden
-        // Por ahora solo mostraremos un mensaje
-        mostrarMensajeCentral("Agregado " + producto.getNombre_producto() +
-                " a la Mesa " + mesaSeleccionada);
-
-        // TODO: Implementar lógica real de agregar a orden
+        // Verifica si el producto ya está en la lista
+        for (ProductoPedido pp : productosAgregados) {
+            if (pp.getProducto().getId_producto() == producto.getId_producto()) {
+                pp.setCantidad(pp.getCantidad() + 1);
+                actualizarListaProductos();
+                return;
+            }
+        }
+        // Si no existe, lo agrega como nuevo
+        productosAgregados.add(new ProductoPedido(producto));
+        actualizarListaProductos();
     }
 
     private void mostrarMensajeCentral(String mensaje) {
@@ -201,5 +212,155 @@ public class SistemaOrdenes extends Stage {
         lblMensaje.setStyle("-fx-font-size: 16px;");
         panelCentral.getChildren().clear();
         panelCentral.getChildren().add(lblMensaje);
+    }
+
+    private void crearPanelDerecho() {
+        VBox panelDerecho = new VBox(10);
+        panelDerecho.setPadding(new Insets(15));
+        panelDerecho.setStyle("-fx-border-color: #ddd; -fx-border-width: 0 0 0 1px;");
+
+        Label lblTitulo = new Label("Productos Agregados");
+        lblTitulo.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+
+        lvProductosAgregados = new ListView<>();
+        lvProductosAgregados.setPrefWidth(250);
+        lvProductosAgregados.setItems(crearItemsLista());
+        lvProductosAgregados.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(HBox item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : item);
+            }
+        });
+
+        lblTotal = new Label("Total: $0.00");
+        lblTotal.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        Button btnFinalizarOrden = new Button("Finalizar Orden");
+        btnFinalizarOrden.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        btnFinalizarOrden.setOnAction(e -> finalizarOrden());
+
+        panelDerecho.getChildren().addAll(lblTitulo, lvProductosAgregados, lblTotal, btnFinalizarOrden);
+        root.setRight(panelDerecho);
+    }
+
+    private ObservableList<HBox> crearItemsLista() {
+        ObservableList<HBox> items = FXCollections.observableArrayList();
+
+        productosAgregados.addListener((ListChangeListener.Change<? extends ProductoPedido> change) -> {
+            items.clear();
+            totalOrden = 0.0;
+
+            while (change.next()) {
+                if (change.wasAdded() || change.wasRemoved() || change.wasUpdated()) {
+                    for (ProductoPedido productoPedido : productosAgregados) {
+                        HBox item = crearItemProducto(productoPedido);
+                        items.add(item);
+                        totalOrden += productoPedido.getSubtotal();
+                    }
+                    lblTotal.setText(String.format("Total: $%.2f", totalOrden));
+                }
+            }
+        });
+
+        return items;
+    }
+
+    private HBox crearItemProducto(ProductoPedido productoPedido) {
+        HBox item = new HBox(10);
+        item.setAlignment(Pos.CENTER_LEFT);
+        item.setPadding(new Insets(5));
+
+        // Botón para disminuir cantidad
+        Button btnMenos = new Button("-");
+        btnMenos.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-min-width: 25;");
+        btnMenos.setOnAction(e -> {
+            if (productoPedido.getCantidad() > 1) {
+                productoPedido.setCantidad(productoPedido.getCantidad() - 1);
+                actualizarListaProductos();
+            }
+        });
+
+
+        Label lblCantidad = new Label(String.valueOf(productoPedido.getCantidad()));
+        lblCantidad.setPrefWidth(30);
+        lblCantidad.setAlignment(Pos.CENTER);
+
+
+        Button btnMas = new Button("+");
+        btnMas.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-min-width: 25;");
+        btnMas.setOnAction(e -> {
+            productoPedido.setCantidad(productoPedido.getCantidad() + 1);
+            actualizarListaProductos();
+        });
+
+
+        HBox contenedorCantidad = new HBox(5, btnMenos, lblCantidad, btnMas);
+        contenedorCantidad.setAlignment(Pos.CENTER);
+
+        Label lblNombre = new Label(productoPedido.getProducto().getNombre_producto());
+        lblNombre.setPrefWidth(100);
+        lblNombre.setWrapText(true);
+
+        Label lblSubtotal = new Label(String.format("$%.2f", productoPedido.getSubtotal()));
+        lblSubtotal.setPrefWidth(60);
+
+        Button btnEliminar = new Button("X");
+        btnEliminar.setStyle("-fx-background-color: #ff9800; -fx-text-fill: white;");
+        btnEliminar.setOnAction(e -> {
+            productosAgregados.remove(productoPedido);
+            actualizarListaProductos();
+        });
+
+        item.getChildren().addAll(contenedorCantidad, lblNombre, lblSubtotal, btnEliminar);
+        return item;
+    }
+
+    private void actualizarListaProductos() {
+        // Actualiza la lista y el total
+        ObservableList<HBox> items = FXCollections.observableArrayList();
+        double nuevoTotal = 0.0;
+
+        for (ProductoPedido productoPedido : productosAgregados) {
+            items.add(crearItemProducto(productoPedido));
+            nuevoTotal += productoPedido.getSubtotal();
+        }
+
+        lvProductosAgregados.setItems(items);
+        lblTotal.setText(String.format("Total: $%.2f", nuevoTotal));
+    }
+
+    private void finalizarOrden() {
+        if (mesaSeleccionada == -1 || productosAgregados.isEmpty()) {
+            mostrarMensajeCentral("Seleccione mesa y agregue productos");
+            return;
+        }
+
+        // Calcular el total correctamente
+        double totalCorrecto = productosAgregados.stream()
+                .mapToDouble(ProductoPedido::getSubtotal)
+                .sum();
+
+        // Construir resumen de la orden
+        StringBuilder resumen = new StringBuilder();
+        resumen.append("Orden para Mesa ").append(mesaSeleccionada).append("\n\n");
+
+        for (ProductoPedido pp : productosAgregados) {
+            resumen.append(String.format("%d x %s - $%.2f\n",
+                    pp.getCantidad(),
+                    pp.getProducto().getNombre_producto(),
+                    pp.getSubtotal()));
+        }
+
+        resumen.append("\nTotal: $").append(String.format("%.2f", totalCorrecto));
+
+        // Mostrar resumen
+        mostrarMensajeCentral(resumen.toString());
+
+        // Limpiar después de guardar
+        productosAgregados.clear();
+        actualizarListaProductos();
+        mesaSeleccionada = -1;
+        actualizarBotonMesas();
     }
 }
