@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ProductoDAO {
@@ -16,6 +17,7 @@ public class ProductoDAO {
     private int id_categoria;
     private int totalVendido;
     private double ingresosTotales;
+    private String imagenPath;
 
     public void insertProducto() {
         String query = "INSERT INTO producto (nombre_producto, precio, costo, id_categoria) VALUES (?,?,?,?)";
@@ -49,7 +51,6 @@ public class ProductoDAO {
         }catch(Exception e){
             e.printStackTrace();
         }
-
     }
 
     public ObservableList<ProductoDAO> selectProducto() {
@@ -84,7 +85,6 @@ public class ProductoDAO {
         GROUP BY p.id_producto
         ORDER BY total_vendido DESC
     """;
-
         ObservableList<ProductoDAO> productos = FXCollections.observableArrayList();
         try {
             Statement stmt = DbConnection.connection.createStatement();
@@ -107,6 +107,30 @@ public class ProductoDAO {
         return productos;
     }
 
+    public static ObservableList<ProductoDAO> obtenerProductosPorCategoria(int idCategoria) {
+        String query = "SELECT * FROM producto WHERE id_categoria = ?";
+        ObservableList<ProductoDAO> productos = FXCollections.observableArrayList();
+
+        try {
+            PreparedStatement ps = DbConnection.connection.prepareStatement(query);
+            ps.setInt(1, idCategoria);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ProductoDAO producto = new ProductoDAO();
+                producto.setId_producto(rs.getInt("id_producto"));
+                producto.setNombre_producto(rs.getString("nombre_producto"));
+                producto.setPrecio(rs.getDouble("precio"));
+                producto.setCosto(rs.getDouble("costo"));
+                producto.setId_categoria(rs.getInt("id_categoria"));
+                producto.setImagenPath(rs.getString("imagen_path"));
+                productos.add(producto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productos;
+    }
 
     public int getId_producto() {
         return id_producto;
@@ -162,5 +186,13 @@ public class ProductoDAO {
 
     public void setIngresosTotales(double ingresosTotales) {
         this.ingresosTotales = ingresosTotales;
+    }
+
+    public String getImagenPath() {
+        return imagenPath;
+    }
+
+    public void setImagenPath(String imagenPath) {
+        this.imagenPath = imagenPath;
     }
 }
