@@ -65,10 +65,9 @@ public class LoginAdmin  extends Stage {
         try {
             AdminDAO dao = new AdminDAO();
             if (dao.validarAdmin(user, pass)) {
-                mostrarAlerta(Alert.AlertType.INFORMATION, "Login exitoso", "Bienvenido, " + user + "!");
+                //mostrarAlerta(Alert.AlertType.INFORMATION, "Login exitoso", "Bienvenido, " + user + "!");
                 new OpcionesAdmin();
                 this.close();
-
             } else {
                 mostrarAlerta(Alert.AlertType.ERROR, "Credenciales incorrectas", "Usuario o contraseña incorrectos.");
             }
@@ -85,6 +84,4 @@ public class LoginAdmin  extends Stage {
         alert.setContentText(mensaje);
         alert.show();
     }
-
-
 }

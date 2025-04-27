@@ -17,7 +17,7 @@ public class OpcionesAdmin extends Stage {
     private BorderPane root;
     private VBox sidebar;
     private Pane contentPane;
-    private Button btnEmpleados, btnClientes, btnProductos, btnOrdenes, btnCerrarSesion;
+    private Button btnEmpleados, btnClientes, btnProductos, btnOrdenes, btnRecervaciones, btnCerrarSesion;
     private Label lblMenu;
     private Scene scene;
 
@@ -35,11 +35,12 @@ public class OpcionesAdmin extends Stage {
         btnClientes = new Button("Clientes");
         btnProductos = new Button("Productos");
         btnOrdenes = new Button("Ordenes");
+        btnRecervaciones = new Button("Recervaciones");
         btnCerrarSesion = new Button("Cerrar Sesion");
         btnCerrarSesion.setId("cerrarSesion");
         lblMenu.setId("menuTitulo");
 
-        sidebar = new VBox(20, lblMenu, btnEmpleados, btnClientes, btnProductos, btnOrdenes, btnCerrarSesion);
+        sidebar = new VBox(20, lblMenu, btnEmpleados, btnClientes, btnProductos, btnOrdenes, btnRecervaciones, btnCerrarSesion);
         sidebar.setPadding(new Insets(30));
         sidebar.setAlignment(Pos.CENTER_LEFT);
         sidebar.setStyle("-fx-background-color: #f8f9fa;");
@@ -52,11 +53,16 @@ public class OpcionesAdmin extends Stage {
             mostrarVista(new ListaEmpleado());
             root.setRight(new EmpleadoTop());
         });
-        btnClientes.setOnAction(e -> mostrarVista(new ListaClientes()));
+        btnClientes.setOnAction(e -> {
+            mostrarVista(new ListaClientes());
+            root.setRight(null);
+        });
+
         btnProductos.setOnAction(e -> {
             mostrarVista(new ListaProductos());
             root.setRight(new ProductoTop());
         });
+
         btnOrdenes.setOnAction(e -> {
             mostrarVista(new ListaOrden());
             Button btnReporteVentas = new Button("Generar Reporte del Día");
@@ -66,6 +72,12 @@ public class OpcionesAdmin extends Stage {
             rightPanel.setPadding(new Insets(15));
             root.setRight(rightPanel);
         });
+
+        btnRecervaciones.setOnAction(e -> {
+            mostrarVista(new ListaReservacion());
+            root.setRight(null);
+        });
+
         btnCerrarSesion.setOnAction(e -> {
             this.close();
             new LoginEmpleado();

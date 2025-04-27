@@ -31,7 +31,7 @@ public class Producto extends Stage {
             txtCostoProducto.setText(Double.toString(objProducto.getCosto()));
             txtCategoriaProducto.setText(Integer.toString(objProducto.getId_categoria()));
         }
-        this.setTitle("Agregar un nuevo producto");
+        this.setTitle("Agregar o editar un producto");
         this.setScene(scene);
         this.show();
     }
