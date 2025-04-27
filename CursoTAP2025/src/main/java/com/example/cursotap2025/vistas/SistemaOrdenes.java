@@ -22,7 +22,7 @@ public class SistemaOrdenes extends Stage {
     private HBox hBoxGlobalTop = new HBox();
     private BorderPane root;
     private Scene scene;
-    private Button btnBebidasAl, btnPlatillos, btnPostres;
+    private Button btnBebidasAl, btnPlatillos, btnPostres, btnReservaciones, btnCerrarSesion;
     private Button[] buttons = new Button[9];
     private String numeroMesas [] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
     private Pane panelCentral;
@@ -98,12 +98,19 @@ public class SistemaOrdenes extends Stage {
         btnBebidasAl = new Button("Bebidas Alcohólicas");
         btnPlatillos = new Button("Platillos");
         btnPostres = new Button("Postres");
+        btnReservaciones = new Button("Reservaciones");
+        btnCerrarSesion = new Button("Cerrar Sesion");
 
         btnBebidasAl.setOnAction(e -> mostrarProductosPorCategoria(5));
         btnPlatillos.setOnAction(e -> mostrarProductosPorCategoria(6));
         btnPostres.setOnAction(e -> mostrarProductosPorCategoria(7));
+        btnReservaciones.setOnAction(e -> {});
+        btnCerrarSesion.setOnAction(e -> {
+            this.close();
+            new LoginEmpleado();
+        });
 
-        hBoxOpcionesMenu = new HBox(btnBebidasAl, btnPlatillos, btnPostres);
+        hBoxOpcionesMenu = new HBox(btnBebidasAl, btnPlatillos, btnPostres, btnReservaciones);
         hBoxOpcionesMenu.setAlignment(Pos.CENTER);
         hBoxOpcionesMenu.setPadding(new Insets(10, 10, 10, 10));
         hBoxOpcionesMenu.setSpacing(5);

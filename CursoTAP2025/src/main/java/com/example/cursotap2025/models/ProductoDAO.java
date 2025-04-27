@@ -22,15 +22,19 @@ public class ProductoDAO {
     public void insertProducto() {
         String query = "INSERT INTO producto (nombre_producto, precio, costo, id_categoria) VALUES (?,?,?,?)";
         try{
-            Statement stmt = DbConnection.connection.createStatement();
-            stmt.executeUpdate(query);
+            PreparedStatement pstmt = DbConnection.connection.prepareStatement(query);
+            pstmt.setString(1, nombre_producto);
+            pstmt.setDouble(2, precio);
+            pstmt.setDouble(3, costo);
+            pstmt.setInt(4, id_categoria);
+            pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void updateProducto() {
-        String query = "UPDATE producto SET nombre_producto=?, precio=?, costo=? , id_categoria = ? WHERE id_producto=?";
+        String query = "UPDATE producto SET nombre_producto=?, precio=?, costo=? , id_categoria = ? WHERE id_producto=" + id_producto;
         try{
             PreparedStatement pstmt = DbConnection.connection.prepareStatement(query);
             pstmt.setString(1, nombre_producto);

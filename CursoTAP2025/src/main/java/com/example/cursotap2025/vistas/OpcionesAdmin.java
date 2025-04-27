@@ -68,7 +68,7 @@ public class OpcionesAdmin extends Stage {
         });
         btnCerrarSesion.setOnAction(e -> {
             this.close();
-            new LoginAdmin().show();
+            new LoginEmpleado();
         });
 
         root = new BorderPane();
