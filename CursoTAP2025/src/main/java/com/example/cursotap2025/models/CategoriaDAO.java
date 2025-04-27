@@ -3,6 +3,7 @@ package com.example.cursotap2025.models;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -61,6 +62,26 @@ public class CategoriaDAO {
         }
         return categorias;
     }
+
+    public CategoriaDAO buscarCategoriaPorId(int id) {
+        CategoriaDAO categoria = null;
+        String quey = "SELECT * FROM categoria WHERE id_categoria= ?";
+        try{
+            PreparedStatement pstmt = DbConnection.connection.prepareStatement(quey);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                categoria = new CategoriaDAO();
+                categoria.setId_categoria(rs.getInt("id_categoria"));
+                categoria.setNombreCategoria(rs.getString("nombre_categoria"));
+                categoria.setDescripcionCategoria(rs.getString("descripcion_categoria"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return categoria;
+    }
+
 
     public int getId_categoria() {
         return id_categoria;

@@ -1,9 +1,11 @@
 package com.example.cursotap2025.vistas;
 
+import com.example.cursotap2025.models.CategoriaDAO;
 import com.example.cursotap2025.models.ProductoDAO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -47,16 +49,18 @@ public class Producto extends Stage {
         txtCategoriaProducto.setPromptText("Categoria");
         btnAgregarProducto = new Button("Agregar");
         btnAgregarProducto.setOnAction(e -> {
-            objProducto.setNombre_producto(txtNombreProducto.getText());
-            objProducto.setPrecio(Double.parseDouble(txtPrecioProducto.getText()));
-            objProducto.setCosto(Double.parseDouble(txtCostoProducto.getText()));
-            objProducto.setId_categoria(Integer.parseInt(txtCategoriaProducto.getText()));
-            if (objProducto.getId_producto() > 0){
-                objProducto.updateProducto();
-            } else objProducto.insertProducto();
-            tbvProducto.setItems(objProducto.selectProducto());
-            tbvProducto.refresh();
-            this.close();
+            if (validarCampos()) {
+                objProducto.setNombre_producto(txtNombreProducto.getText());
+                objProducto.setPrecio(Double.parseDouble(txtPrecioProducto.getText()));
+                objProducto.setCosto(Double.parseDouble(txtCostoProducto.getText()));
+                objProducto.setId_categoria(Integer.parseInt(txtCategoriaProducto.getText()));
+                if (objProducto.getId_producto() > 0) {
+                    objProducto.updateProducto();
+                } else objProducto.insertProducto();
+                tbvProducto.setItems(objProducto.selectProducto());
+                tbvProducto.refresh();
+                this.close();
+            }
         });
         vBox = new VBox(txtNombreProducto, txtPrecioProducto, txtCostoProducto, txtCategoriaProducto, btnAgregarProducto);
         vBox.setAlignment(Pos.CENTER);
@@ -65,4 +69,58 @@ public class Producto extends Stage {
         scene = new Scene(vBox, 400,400);
         scene.getStylesheets().add(getClass().getResource("/Styles/Categoria.css").toExternalForm());
     }
+
+    private boolean validarCampos() {
+        if (txtNombreProducto.getText().trim().isEmpty() ||
+                txtPrecioProducto.getText().trim().isEmpty() ||
+                txtCostoProducto.getText().trim().isEmpty() ||
+                txtCategoriaProducto.getText().trim().isEmpty()) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Campos vacíos", "Por favor llena todos los campos.");
+            return false;
+        }
+
+        try {
+            Double.parseDouble(txtPrecioProducto.getText().trim());
+        } catch (NumberFormatException e) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Precio inválido", "El precio debe ser un número válido.");
+            return false;
+        }
+
+        try {
+            Double.parseDouble(txtCostoProducto.getText().trim());
+        } catch (NumberFormatException e) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Costo inválido", "El costo debe ser un número válido.");
+            return false;
+        }
+
+        int idCategoria;
+        try {
+            idCategoria = Integer.parseInt(txtCategoriaProducto.getText().trim());
+        } catch (NumberFormatException e) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Categoría inválida", "La categoría debe ser un número entero.");
+            return false;
+        }
+
+        if (!categoriaExiste(idCategoria)) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Categoría no encontrada", "La categoría ingresada no existe en la base de datos.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean categoriaExiste(int idCategoria) {
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        return categoriaDAO.buscarCategoriaPorId(idCategoria) != null;
+    }
+
+
+    private void mostrarAlerta(Alert.AlertType alertType, String titulo, String mensaje) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
 }

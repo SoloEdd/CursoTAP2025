@@ -56,12 +56,10 @@ public class LoginAdmin  extends Stage {
     private void validarCredenciales() {
         String user = username.getText().trim();
         String pass = password.getText().trim();
-
         if (user.isEmpty() || pass.isEmpty()) {
             mostrarAlerta(Alert.AlertType.WARNING, "Campos vacíos", "Por favor, complete todos los campos.");
             return;
         }
-
         try {
             AdminDAO dao = new AdminDAO();
             if (dao.validarAdmin(user, pass)) {

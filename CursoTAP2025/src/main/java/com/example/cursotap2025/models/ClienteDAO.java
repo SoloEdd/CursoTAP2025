@@ -85,7 +85,6 @@ public class ClienteDAO {
         }
     }
 
-
     public int getIdCliente() {
         return idCliente;
     }
