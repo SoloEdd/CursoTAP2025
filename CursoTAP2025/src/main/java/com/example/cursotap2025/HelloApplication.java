@@ -23,7 +23,6 @@ public class HelloApplication extends Application {
     private MenuItem mitCalculadora, mitRestaurate;
     private Scene scena;
 
-
     void CrearUI(){
         mitCalculadora = new MenuItem("Calculadora");
         mitCalculadora.setOnAction(e -> {new Calculadora(); });

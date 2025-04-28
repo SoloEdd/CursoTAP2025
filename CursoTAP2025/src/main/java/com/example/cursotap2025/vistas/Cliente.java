@@ -57,7 +57,7 @@ public class Cliente extends Stage {
             if(objC.getIdCliente() > 0){
                 objC.updateCliente();
             }else {
-                objC.insertCliente();
+                objC.insertClienteAdmin();
             }
             tbvClientes.setItems(objC.selectCliente());
             tbvClientes.refresh();

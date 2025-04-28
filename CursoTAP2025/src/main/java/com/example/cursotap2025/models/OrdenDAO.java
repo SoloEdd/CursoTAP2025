@@ -3,10 +3,7 @@ package com.example.cursotap2025.models;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.*;
 
 public class OrdenDAO {
 
@@ -20,7 +17,7 @@ public class OrdenDAO {
     private double total;
 
 
-    public void insertOrden() {
+    public void insertOrdenAdmin() {
         String query = "INSERT INTO orden(idCte, no_mesa, id_empleado, fecha) VALUES (?,?,?,?)";
         try{
             Statement stmt = DbConnection.connection.createStatement();
@@ -28,6 +25,29 @@ public class OrdenDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean insertOrden() {
+        String query = "INSERT INTO orden (no_mesa, id_empleado, idCte, fecha) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement ps = DbConnection.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, no_mesa);
+            ps.setInt(2, id_empleado);
+            ps.setInt(3, idCte);
+            ps.setTimestamp(4, fecha);
+
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        this.id_orden = rs.getInt(1);
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void updateOrden() {
@@ -138,6 +158,22 @@ public class OrdenDAO {
             e.printStackTrace();
         }
         return 0.0;
+    }
+
+    public static boolean mesaEstaOcupada(int numeroMesa) {
+        String query = "SELECT COUNT(*) FROM orden WHERE no_mesa = ? AND fecha >= DATE_SUB(NOW(), INTERVAL 1 HOUR)";
+        try {
+            PreparedStatement ps = DbConnection.connection.prepareStatement(query);
+            ps.setInt(1, numeroMesa);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public int getId_orden() {

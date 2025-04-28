@@ -9,7 +9,6 @@ public class ProductoPedido {
         this.cantidad = 1;
     }
 
-
     public ProductoDAO getProducto() {
         return producto;
     }
