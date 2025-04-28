@@ -2,7 +2,10 @@ package com.example.cursotap2025.models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ClienteDAO {
@@ -12,8 +15,9 @@ public class ClienteDAO {
     private String telCte;
     private String direccion;
     private String emailCte;
+    private String password;
 
-    public void insertCliente() {
+    public void insertClienteAdmin() {
         String query = "INSERT INTO cliente(nomCte, telCte, direccion, emailCte) " +
                 "values('"+nomCte+"','"+telCte+"','"+direccion+"','"+emailCte+"')";
         try{
@@ -22,6 +26,29 @@ public class ClienteDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean insertCliente() {
+        String query = "INSERT INTO cliente(nomCte, telCte, direccion, emailCte) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement ps = DbConnection.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, nomCte);
+            ps.setString(2, telCte);
+            ps.setString(3, direccion);
+            ps.setString(4, emailCte);
+
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        this.idCliente = rs.getInt(1);
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void updateCliente() {
@@ -66,6 +93,25 @@ public class ClienteDAO {
             e.printStackTrace();
         }
         return listaC;
+    }
+
+    public boolean login(String email, String password) {
+        String query = "SELECT * FROM cliente WHERE emailCte = ? AND password = ?";
+        try {
+            PreparedStatement stmt = DbConnection.connection.prepareStatement(query);
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); // Si hay resultado, es válido
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return nomCte + " - " + telCte;
     }
 
     public int getIdCliente() {

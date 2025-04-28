@@ -2,27 +2,20 @@ package com.example.cursotap2025.vistas;
 
 import com.example.cursotap2025.componentes.ButtonCell;
 import com.example.cursotap2025.models.ClienteDAO;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class ListaClientes extends Stage {
+public class ListaClientes extends VBox {
 
     private ToolBar tlbMenu;
     private TableView<ClienteDAO> tbvClientes;
-    private VBox vBox;
-    private Scene escena;
     private Button btnAgregar;
 
     public ListaClientes(){
         CrearUI();
-        this.setTitle("Listado de Clientes :)");
-        this.setScene(escena);
-        this.show();
     }
 
     private void CrearUI() {
@@ -35,8 +28,11 @@ public class ListaClientes extends Stage {
         btnAgregar.setGraphic(imv);
         tlbMenu = new ToolBar(btnAgregar);
         CreateTable();
-        vBox = new VBox(tlbMenu,tbvClientes);
-        escena = new Scene(vBox, 800, 600);
+
+        this.setSpacing(10);
+        this.getChildren().addAll(tlbMenu, tbvClientes);
+        this.getStylesheets().add(getClass().getResource("/Styles/Clientes.css").toExternalForm());
+
     }
 
     private void CreateTable() {
@@ -64,7 +60,6 @@ public class ListaClientes extends Stage {
                 return new ButtonCell("Eliminar");
             }
         });
-
         tbvClientes.getColumns().addAll(tbcNomCte,tbcDireccion,tbcTel,tbcEmail, tbcEditar,tbcEliminar);
         tbvClientes.setItems(obC.selectCliente());
 

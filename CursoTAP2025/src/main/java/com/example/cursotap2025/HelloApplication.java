@@ -1,16 +1,9 @@
 package com.example.cursotap2025;
 
-import com.example.cursotap2025.componentes.Hilo;
 import com.example.cursotap2025.models.DbConnection;
-import com.example.cursotap2025.vistas.Calculadora;
-import com.example.cursotap2025.vistas.Celayork;
-import com.example.cursotap2025.vistas.ListaClientes;
-import com.example.cursotap2025.vistas.VentasRestaurante;
+import com.example.cursotap2025.vistas.*;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -24,21 +17,17 @@ public class HelloApplication extends Application {
     private VBox vBox;
     private MenuBar menuBarPrincipal;
     private Menu menuCompetencia1, menuCompetencia2;
-    private MenuItem mitCalculadora, mitRestaurate, mitHilos;
+    private MenuItem mitCalculadora, mitRestaurate;
     private Scene scena;
-
 
     void CrearUI(){
         mitCalculadora = new MenuItem("Calculadora");
         mitCalculadora.setOnAction(e -> {new Calculadora(); });
         mitRestaurate = new MenuItem("Restaurante");
-        mitRestaurate.setOnAction(actionEvent -> new ListaClientes());
-        mitHilos = new MenuItem("Hilos");
-        mitHilos.setOnAction(actionEvent -> new Celayork());
+        mitRestaurate.setOnAction(actionEvent -> new LoginEmpleado());
         menuCompetencia1 = new Menu("Competencia Uno");
         menuCompetencia1.getItems().addAll(mitCalculadora, mitRestaurate);
         menuCompetencia2 = new Menu("Competencia Dos");
-        menuCompetencia2.getItems().addAll(mitHilos);
         menuBarPrincipal = new MenuBar();
         menuBarPrincipal.getMenus().addAll(menuCompetencia1, menuCompetencia2);
         vBox = new VBox(menuBarPrincipal);
@@ -48,7 +37,6 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-
         DbConnection.createConnection();
         CrearUI();
         stage.setTitle("Topicos Avanzandos de Programacion 2025");
