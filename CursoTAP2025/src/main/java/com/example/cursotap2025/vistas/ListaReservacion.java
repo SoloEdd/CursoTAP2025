@@ -37,6 +37,8 @@ public class ListaReservacion extends VBox {
         colIdCte.setCellValueFactory(new PropertyValueFactory<>("id_cliente"));
         TableColumn<ReservacionDAO, Timestamp> colFecha = new TableColumn<>("Fecha de Reserva");
         colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha_reservacion"));
+        TableColumn<ReservacionDAO, Integer> colNoPersonas = new TableColumn<>("Numero de personas");
+        colNoPersonas.setCellValueFactory(new PropertyValueFactory<>("no_personas"));
         TableColumn<ReservacionDAO, String> colEditar = new TableColumn<>("Editar");
         colEditar.setCellFactory(new Callback<TableColumn<ReservacionDAO, String>, TableCell<ReservacionDAO, String>>() {
             @Override
@@ -52,7 +54,7 @@ public class ListaReservacion extends VBox {
             }
         });
 
-        tbvReservacion.getColumns().addAll(colIdReservacion, colIdCte, colFecha, colEditar, colEliminar);
+        tbvReservacion.getColumns().addAll(colIdReservacion, colIdCte, colFecha, colNoPersonas, colEditar, colEliminar);
         tbvReservacion.setItems(dao.selectAllReservacion());
     }
 

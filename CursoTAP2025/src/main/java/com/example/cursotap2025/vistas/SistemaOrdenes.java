@@ -127,7 +127,10 @@ public class SistemaOrdenes extends Stage {
         btnBebidasAl.setOnAction(e -> mostrarProductosPorCategoria(5));
         btnPlatillos.setOnAction(e -> mostrarProductosPorCategoria(6));
         btnPostres.setOnAction(e -> mostrarProductosPorCategoria(7));
-        btnReservaciones.setOnAction(e -> {});
+        btnReservaciones.setOnAction(e -> {
+            new FormularioReservacion();
+
+        });
         btnCerrarSesion.setOnAction(e -> {
             this.close();
             new LoginEmpleado();

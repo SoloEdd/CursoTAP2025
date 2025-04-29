@@ -62,6 +62,5 @@ public class ListaClientes extends VBox {
         });
         tbvClientes.getColumns().addAll(tbcNomCte,tbcDireccion,tbcTel,tbcEmail, tbcEditar,tbcEliminar);
         tbvClientes.setItems(obC.selectCliente());
-
     }
 }
