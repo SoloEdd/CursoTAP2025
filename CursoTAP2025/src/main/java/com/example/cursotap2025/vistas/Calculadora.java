@@ -1,6 +1,5 @@
 package com.example.cursotap2025.vistas;
 
-import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,7 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class Calculadora extends Stage {
 
@@ -25,7 +23,6 @@ public class Calculadora extends Stage {
     private boolean puntoPresente = false;
     private boolean operadorPresente = false;
     private Button btnBorrar;
-
 
     public Calculadora() {
         CrearUI();
@@ -70,7 +67,6 @@ public class Calculadora extends Stage {
     }
 
     private void EventoTeclado(String strTecla) {
-        // Si es un número o un punto decimal
         if (strTecla.matches("[0-9]")) {
             if (nuevoIngreso) {
                 txtDisplay.setText(strTecla);
@@ -78,7 +74,6 @@ public class Calculadora extends Stage {
             } else {
                 txtDisplay.appendText(strTecla);
             }
-            operadorPresente = false; // Se permite seleccionar otro operador después de ingresar un número
         }
         else if (strTecla.equals(".") && !puntoPresente) {
             txtDisplay.appendText(strTecla);
@@ -89,8 +84,9 @@ public class Calculadora extends Stage {
                 primerOperando = txtDisplay.getText();
                 operador = strTecla;
                 nuevoIngreso = true;
-                puntoPresente = false; // Reactivar el punto para el siguiente número
-                operadorPresente = true; // Bloquea la selección de otro operador hasta que se ingrese un número
+                puntoPresente = false;
+                operadorPresente = true;
+                bloquearOperadores(true); // Bloquear otros operadores
             } else {
                 txtDisplay.setText("Error: Ingrese un número");
             }
@@ -98,9 +94,21 @@ public class Calculadora extends Stage {
         else if (strTecla.equals("=")) {
             if (!primerOperando.isEmpty() && !txtDisplay.getText().isEmpty() && !nuevoIngreso) {
                 Calcular();
-                operadorPresente = false; // Permitir ingresar un nuevo operador después del cálculo
+                operadorPresente = false;
+                bloquearOperadores(false);
             } else {
                 txtDisplay.setText("Error: Operación inválida");
+            }
+        }
+    }
+
+    private void bloquearOperadores(boolean bloquear) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                String textoBoton = arrBtnTeclado[i][j].getText();
+                if (textoBoton.matches("[+\\-*/]") && !textoBoton.equals(operador)) {
+                    arrBtnTeclado[i][j].setDisable(bloquear);
+                }
             }
         }
     }
@@ -139,12 +147,12 @@ public class Calculadora extends Stage {
     }
 
     private void Borrar() {
-        txtDisplay.clear();  // Limpiar pantalla
+        txtDisplay.clear();
         primerOperando = "";
         operador = "";
         nuevoIngreso = false;
         puntoPresente = false;
         operadorPresente = false;
+        bloquearOperadores(false);
     }
-
 }
