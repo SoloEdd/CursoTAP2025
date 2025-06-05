@@ -17,7 +17,7 @@ public class HelloApplication extends Application {
     private VBox vBox;
     private MenuBar menuBarPrincipal;
     private Menu menuCompetencia1, menuCompetencia2;
-    private MenuItem mitCalculadora, mitRestaurate;
+    private MenuItem mitCalculadora, mitRestaurate, mitRompecabezas;
     private Scene scena;
 
     void CrearUI(){
@@ -25,8 +25,10 @@ public class HelloApplication extends Application {
         mitCalculadora.setOnAction(e -> {new Calculadora(); });
         mitRestaurate = new MenuItem("Restaurante");
         mitRestaurate.setOnAction(actionEvent -> new LoginEmpleado());
+        mitRompecabezas = new MenuItem("Rompecabezas");
+        mitRompecabezas.setOnAction(actionEvent -> new Rompecabezas());
         menuCompetencia1 = new Menu("Competencia Uno");
-        menuCompetencia1.getItems().addAll(mitCalculadora, mitRestaurate);
+        menuCompetencia1.getItems().addAll(mitCalculadora, mitRestaurate, mitRompecabezas);
         menuCompetencia2 = new Menu("Competencia Dos");
         menuBarPrincipal = new MenuBar();
         menuBarPrincipal.getMenus().addAll(menuCompetencia1, menuCompetencia2);
